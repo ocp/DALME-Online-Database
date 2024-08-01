@@ -9,15 +9,14 @@ import os
 
 from django.conf import settings
 from django.contrib.postgres.expressions import ArraySubquery
-from django.db import models
-from django.db.models import Case, Exists, ExpressionWrapper, OuterRef, When
+from django.db.models import Case, Exists, ExpressionWrapper, Manager, OneToOneField, OuterRef, QuerySet, When
 
 from ida.context import get_current_tenant
 
 PROD_ENVS = {'staging', 'production'}
 
 
-class CustomQuerySet(models.QuerySet):
+class CustomQuerySet(QuerySet):
     """Refine the default queryset on models managed by CustomManager."""
 
     def as_manager(cls):  # noqa: N805
@@ -32,9 +31,10 @@ class CustomQuerySet(models.QuerySet):
         from ida.models.attribute import Attribute, AttributeField, ListField
 
         qs = self.prefetch_related('attributes')
+        model_name = self.get_model_name()
         for attr in args:
             attr_sq = Attribute.objects.filter(
-                **{f'ida_{self.model.__name__.lower()}_related': OuterRef('pk'), 'attribute_type__name': attr}
+                **{f'ida_{model_name}_related': OuterRef('pk'), 'attribute_type__name': attr}
             )
             qs = qs.annotate(
                 **{
@@ -46,8 +46,15 @@ class CustomQuerySet(models.QuerySet):
             )
         return qs
 
+    def get_model_name(self):
+        if self.model._meta.parents:  # noqa: SLF001
+            for cls, field in self.model._meta.parents.items():  # noqa: SLF001
+                if isinstance(field, OneToOneField):
+                    return cls.__name__.lower()
+        return self.model.__name__.lower()
 
-class CustomManager(models.Manager):
+
+class CustomManager(Manager):
     """Replace the default manager on all models inheriting from AttributeMixin or TenantMixin."""
 
     def get_queryset(self):
@@ -78,10 +85,7 @@ class CustomManager(models.Manager):
         is_tenanted = hasattr(self.model, 'is_tenanted')
         attribute_list = self.model.attribute_list() if hasattr(self.model, 'attribute_list') else None
 
-        if self._queryset_class != models.QuerySet:
-            qs = super().get_queryset()
-        else:
-            qs = CustomQuerySet(self.model, using=self._db)
+        qs = super().get_queryset() if self._queryset_class != QuerySet else CustomQuerySet(self.model, using=self._db)
 
         if is_tenanted:
             qs = filter_tenant(qs)
