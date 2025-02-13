@@ -39,9 +39,13 @@ endif
 app.migrate_data:
 	docker compose exec \
 		-e DATA_MIGRATION=1 \
+		-e ZOTERO_LIBRARY_ID=2205677 \
+		-e ZOTERO_API_KEY=tCgni1vugrcfjjFOApj0NiRI \
+		-e ZOTERO_LIBRARY_ID_GP=2205678 \
+		-e ZOTERO_API_KEY_GP=tCgni1vugrcfjjFOApj0NiRI \
 		$(NAMESPACE).app \
 		python manage.py migrate_data
-.PHONY: app.manage
+.PHONY: app.migrate_data
 
 app.notebook:
 	docker compose exec \
