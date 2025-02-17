@@ -40,6 +40,7 @@ services:
       - app-network
     volumes:
       - ./app:/opt/app
+      - ./config/oidc.key:/opt/app/oidc.key
       - ./notebooks:/opt/app/notebooks
       - ./notebooks/ipython:/root/.ipython/profile_default
     restart: unless-stopped
