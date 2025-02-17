@@ -120,7 +120,6 @@ COPY ./app/oauth ./oauth
 COPY ./app/search ./search
 COPY ./app/static ./static
 COPY ./app/tenants ./tenants
-COPY ./app/tenant_overrides ./tenant_overrides
 COPY ./app/web ./web
 COPY ./app/manage.py ./
 
