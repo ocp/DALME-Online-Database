@@ -240,7 +240,7 @@ class Base(Configuration):
     def MULTITENANT_TEMPLATE_DIRS(self):
         return [
             # NOTE: This doesn't seem to work unless you hardcode the %s string.
-            (self.BASE_DIR / 'tenants/%s/templates').as_posix(),
+            (self.PROJECT_ROOT / 'tenant_overrides/%s/templates').as_posix(),
         ]
 
     DATABASE_ROUTERS = [
