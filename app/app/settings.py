@@ -79,26 +79,27 @@ class Base(Configuration):
     @property
     def STATICFILES_DIRS(self):
         return [
-            (self.PROJECT_ROOT / 'web' / 'static' / 'common').as_posix(),
+            (self.PROJECT_ROOT / 'static').as_posix(),
         ]
 
     @property
     def MULTITENANT_STATICFILES_DIRS(self):
         return [
-            (self.PROJECT_ROOT / 'web' / 'static' / 'tenants' / '%s').as_posix(),
+            # NOTE: This doesn't seem to work unless you concat the %s string.
+            (self.PROJECT_ROOT / 'tenant_overrides/%s/static').as_posix(),
         ]
-
-    STATIC_LOCATION = 'static'
-    MEDIA_LOCATION = 'media'
-    AVATARS_LOCATION = 'avatar_images'
 
     STATICFILES_FINDERS = [
         'django_tenants.staticfiles.finders.TenantFileSystemFinder',  # NOTE: Must come first.
         'django.contrib.staticfiles.finders.FileSystemFinder',
         'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     ]
-    STATIC_URL = '/static/'
-    MEDIA_URL = '/media/'
+    MULTITENANT_RELATIVE_STATIC_ROOT = ''
+    MULTITENANT_RELATIVE_MEDIA_ROOT = ''
+
+    STATIC_LOCATION = 'static'
+    MEDIA_LOCATION = 'media'
+    AVATARS_LOCATION = 'avatar_images'
 
     SHARED_TENANT_APPS = [
         'django.contrib.sites',
@@ -546,6 +547,14 @@ class Development(Base, Configuration):
     @property
     def STATIC_ROOT(self):
         return (self.PROJECT_ROOT / 'www' / 'static').as_posix()
+
+    @property
+    def MEDIA_URL(self):
+        return f'/{self.MEDIA_LOCATION}/'
+
+    @property
+    def STATIC_URL(self):
+        return f'/{self.STATIC_LOCATION}/'
 
     DATABASES = {
         'default': {
