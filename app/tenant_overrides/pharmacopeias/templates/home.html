@@ -25,9 +25,7 @@
 {% endblock %}
 
 {% block main_column %}
-    {% include "common/includes/featured.html" %}
-    {% include_block page.body %}
-    {% sponsors %}
-
-    <img src="{% static 'images/hello.jpg' %}" alt="Hello, World!">
+  {% include "common/includes/featured.html" %}
+  {% include_block page.body %}
+  {% sponsors %}
 {% endblock %}

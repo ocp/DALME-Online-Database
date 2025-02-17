@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
@@ -11,5 +12,6 @@
 
   <body id="body" class="{{ page_name }} u-flex u-type-sans">
     <h1>Welcome to the IDA!</h1>
+    <img src="{% static 'images/hello.jpg' %}" alt="Hello, IDA!">
   </body>
 </html>
