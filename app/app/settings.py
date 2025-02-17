@@ -85,7 +85,7 @@ class Base(Configuration):
     @property
     def MULTITENANT_STATICFILES_DIRS(self):
         return [
-            # NOTE: This doesn't seem to work unless you concat the %s string.
+            # NOTE: This doesn't seem to work unless you hardcode the %s string.
             (self.PROJECT_ROOT / 'tenant_overrides/%s/static').as_posix(),
         ]
 
@@ -239,7 +239,8 @@ class Base(Configuration):
     @property
     def MULTITENANT_TEMPLATE_DIRS(self):
         return [
-            (self.PROJECT_ROOT / 'web' / 'templates' / 'tenants' / '%s').as_posix(),
+            # NOTE: This doesn't seem to work unless you hardcode the %s string.
+            (self.BASE_DIR / 'tenants/%s/templates').as_posix(),
         ]
 
     DATABASE_ROUTERS = [
