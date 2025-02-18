@@ -1,19 +1,21 @@
 """Customize staticfiles storage logic."""
 
-import structlog
 from storages.backends.s3boto3 import S3Boto3Storage, S3ManifestStaticStorage
 
+from django.contrib.staticfiles.storage import StaticFilesStorage
 from django.db import connection
 
 from app.context import get_current_tenant
-
-logger = structlog.get_logger(__name__)
 
 
 class StaticStorage(S3ManifestStaticStorage):
     """Multitenant aware staticfiles storage class for S3."""
 
     key = 'static'
+
+    def __init__(self, *args, **kwargs):
+        manifest_storage = StaticFilesStorage(location=self.location)
+        super().__init__(*args, manifest_storage=manifest_storage, **kwargs)
 
     @property
     def schema(self):
