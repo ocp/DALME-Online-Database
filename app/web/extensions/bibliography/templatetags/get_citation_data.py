@@ -24,9 +24,8 @@ def get_citation_data(context):  # noqa: C901, PLR0912, PLR0915
     record = context.get('record', False)
     settings = Settings.objects.first()
 
-    with open(
-        os.path.join('web', 'static', 'common', 'citation_styles', 'citation_formats.json'), encoding='utf-8'
-    ) as fp:
+    path = os.path.join('web', 'static', 'citation_styles', 'citation_formats.json')
+    with open(path, encoding='utf-8') as fp:
         formats = json.load(fp)
 
     coins_list = [
