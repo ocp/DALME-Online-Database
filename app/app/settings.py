@@ -205,12 +205,27 @@ class Base(Configuration):
 
     @property
     def TEMPLATES(self):
+        extensions_dirs = [
+            'records',
+            'bibliography',
+            'images',
+            'banners',
+            'team',
+            'footnotes',
+            'gradients',
+            'extras',
+        ]
+        extensions_templates = [
+            (self.PROJECT_ROOT / 'app' / 'web' / 'extensions' / subdir / 'templates').as_posix()
+            for subdir in extensions_dirs
+        ]
+
         return [
             {
                 'BACKEND': 'django.template.backends.django.DjangoTemplates',
                 'DIRS': [
                     (self.PROJECT_ROOT / 'app' / 'templates').as_posix(),
-                    (self.PROJECT_ROOT / 'web' / 'templates').as_posix(),
+                    *extensions_templates,
                 ],
                 'OPTIONS': {
                     'context_processors': [
