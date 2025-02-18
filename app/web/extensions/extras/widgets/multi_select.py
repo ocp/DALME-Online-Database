@@ -81,8 +81,8 @@ class MultiSelect(CustomSelect):
     @cached_property
     def media(self):
         return Media(
-            js=['js/multi-select-controller.js'],
-            css={'all': ['css/multi-select-widget.css']},
+            js=['ida_extensions/js/multi-select-controller.js'],
+            css={'all': ['ida_extensions/css/multi-select-widget.css']},
         )
 
     def value_from_datadict(self, data, files, name):

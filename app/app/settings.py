@@ -78,8 +78,14 @@ class Base(Configuration):
 
     @property
     def STATICFILES_DIRS(self):
+        namespace = 'ida_extensions'
+        subdirs = ['records', 'bibliography', 'images', 'banners', 'team', 'footnotes', 'gradients', 'extras']
+        extensions_dirs = [
+            (namespace, (self.PROJECT_ROOT / 'web' / 'extensions' / subdir / 'static').as_posix()) for subdir in subdirs
+        ]
         return [
             (self.PROJECT_ROOT / 'static').as_posix(),
+            *extensions_dirs,
         ]
 
     @property
@@ -204,7 +210,7 @@ class Base(Configuration):
                 'BACKEND': 'django.template.backends.django.DjangoTemplates',
                 'DIRS': [
                     (self.PROJECT_ROOT / 'app' / 'templates').as_posix(),
-                    (self.PROJECT_ROOT / 'web' / 'templates' / 'common').as_posix(),
+                    (self.PROJECT_ROOT / 'web' / 'templates').as_posix(),
                 ],
                 'OPTIONS': {
                     'context_processors': [

@@ -95,7 +95,7 @@ class AdminGradientChooser(BaseChooser):
             js=[
                 *base_media._js,  # noqa: SLF001
                 'wagtailadmin/js/chooser-modal.js',
-                'js/gradient-chooser-modal.js',
+                'ida_extensions/js/gradient-chooser-modal.js',
             ]
         )
 
