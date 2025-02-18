@@ -216,15 +216,14 @@ class Base(Configuration):
             'extras',
         ]
         extensions_templates = [
-            (self.PROJECT_ROOT / 'app' / 'web' / 'extensions' / subdir / 'templates').as_posix()
-            for subdir in extensions_dirs
+            (self.PROJECT_ROOT / 'web' / 'extensions' / subdir / 'templates').as_posix() for subdir in extensions_dirs
         ]
 
         return [
             {
                 'BACKEND': 'django.template.backends.django.DjangoTemplates',
                 'DIRS': [
-                    (self.PROJECT_ROOT / 'app' / 'templates').as_posix(),
+                    (self.PROJECT_ROOT / 'templates').as_posix(),
                     *extensions_templates,
                 ],
                 'OPTIONS': {
