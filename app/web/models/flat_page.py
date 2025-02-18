@@ -13,7 +13,7 @@ from web.models.base_page import BasePage
 
 
 class Flat(BasePage, CitableMixin):
-    template = 'flat.html'
+    template = 'web/flat.html'
 
     show_contact_form = models.BooleanField(
         default=False,
