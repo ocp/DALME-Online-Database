@@ -79,26 +79,27 @@ class Base(Configuration):
     @property
     def STATICFILES_DIRS(self):
         return [
-            (self.PROJECT_ROOT / 'web' / 'static' / 'common').as_posix(),
+            (self.PROJECT_ROOT / 'static').as_posix(),
         ]
 
     @property
     def MULTITENANT_STATICFILES_DIRS(self):
         return [
-            (self.PROJECT_ROOT / 'web' / 'static' / 'tenants' / '%s').as_posix(),
+            # NOTE: This doesn't seem to work unless you hardcode the %s string.
+            (self.PROJECT_ROOT / 'tenants' / 'overrides/%s/static').as_posix(),
         ]
-
-    STATIC_LOCATION = 'static'
-    MEDIA_LOCATION = 'media'
-    AVATARS_LOCATION = 'avatar_images'
 
     STATICFILES_FINDERS = [
         'django_tenants.staticfiles.finders.TenantFileSystemFinder',  # NOTE: Must come first.
         'django.contrib.staticfiles.finders.FileSystemFinder',
         'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     ]
-    STATIC_URL = '/static/'
-    MEDIA_URL = '/media/'
+    MULTITENANT_RELATIVE_STATIC_ROOT = ''
+    MULTITENANT_RELATIVE_MEDIA_ROOT = ''
+
+    STATIC_LOCATION = 'static'
+    MEDIA_LOCATION = 'media'
+    AVATARS_LOCATION = 'avatar_images'
 
     SHARED_TENANT_APPS = [
         'django.contrib.sites',
@@ -176,16 +177,6 @@ class Base(Configuration):
     }
     ROOT_URLCONF = ''  # Don't change this! Multi-type tenants relies on it.
 
-    def INSTALLED_APPS(self):
-        installed_apps = ['django_tenants']
-        for schema in self.TENANT_TYPES:
-            installed_apps += [app for app in self.TENANT_TYPES[schema]['APPS'] if app not in installed_apps]
-
-        extra_apps = ['django_extensions'] if self.IS_DEV else ['storages']
-        installed_apps += [app for app in extra_apps if app not in installed_apps]
-
-        return installed_apps
-
     MIDDLEWARE = [
         'app.middleware.HealthCheckMiddleware',
         'corsheaders.middleware.CorsMiddleware',
@@ -238,7 +229,8 @@ class Base(Configuration):
     @property
     def MULTITENANT_TEMPLATE_DIRS(self):
         return [
-            (self.PROJECT_ROOT / 'web' / 'templates' / 'tenants' / '%s').as_posix(),
+            # NOTE: This doesn't seem to work unless you hardcode the %s string.
+            (self.PROJECT_ROOT / 'tenants' / 'overrides/%s/templates').as_posix(),
         ]
 
     DATABASE_ROUTERS = [
@@ -478,8 +470,6 @@ class Development(Base, Configuration):
     """Development settings."""
 
     DEBUG = True
-    DOTENV = os.environ.get('ENV_FILE')
-    BASE_URL = 'http://ida.localhost:8000'
 
     _TENANTS = {
         'IDA': {
@@ -539,6 +529,14 @@ class Development(Base, Configuration):
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     SECRET_KEY = 'django-development-environment-insecure-secret-key'
 
+    def INSTALLED_APPS(self):
+        installed_apps = ['django_tenants']
+        for schema in self.TENANT_TYPES:
+            installed_apps += [app for app in self.TENANT_TYPES[schema]['APPS'] if app not in installed_apps]
+        installed_apps += ['django_extensions']
+
+        return installed_apps
+
     @property
     def MEDIA_ROOT(self):
         return (self.PROJECT_ROOT / 'www' / 'media').as_posix()
@@ -546,6 +544,14 @@ class Development(Base, Configuration):
     @property
     def STATIC_ROOT(self):
         return (self.PROJECT_ROOT / 'www' / 'static').as_posix()
+
+    @property
+    def MEDIA_URL(self):
+        return f'/{self.MEDIA_LOCATION}/'
+
+    @property
+    def STATIC_URL(self):
+        return f'/{self.STATIC_LOCATION}/'
 
     DATABASES = {
         'default': {
@@ -668,12 +674,15 @@ class CI(Development, Configuration):
 class Production(Base, Configuration):
     """Production settings."""
 
-    @classmethod
-    def setup(cls):
-        super().setup()
-        cls.LOGGING['root']['handlers'] = ['flat_line']
-
     DEBUG = False
+
+    def INSTALLED_APPS(self):
+        installed_apps = ['django_tenants']
+        for schema in self.TENANT_TYPES:
+            installed_apps += [app for app in self.TENANT_TYPES[schema]['APPS'] if app not in installed_apps]
+        installed_apps += ['storages']
+
+        return installed_apps
 
     # NOTE: By property-izing these env values we make their evaluation lazy
     # and we don't need to also set them in the development environment, which
