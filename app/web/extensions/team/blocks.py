@@ -100,8 +100,8 @@ class TeamListBlockAdapter(StructBlockAdapter):
     def media(self):
         structblock_media = super().media
         return forms.Media(
-            js=[*structblock_media._js, 'js/team-list-form.js'],  # noqa: SLF001
-            css={'all': ['css/team-list-form.css']},
+            js=[*structblock_media._js, 'ida_extensions/js/team-list-form.js'],  # noqa: SLF001
+            css={'all': ['ida_extensions/css/team-list-form.css']},
         )
 
 

@@ -30,8 +30,8 @@ def register_reference_feature(features):
         feature_name,
         draftail_features.EntityFeature(
             control,
-            js=['js/reference-chooser-modal.js'],
-            css={'all': ['css/reference-chooser.css']},
+            js=['ida_extensions/js/reference-chooser-modal.js'],
+            css={'all': ['ida_extensions/css/reference-chooser.css']},
         ),
     )
 
