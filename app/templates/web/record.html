@@ -241,7 +241,7 @@
   <div class="folios u-flex viewer" :class="viewerMode">
     <section class="folio">
       <div class="record-info" v-if="showInfoPanel" v-on-clickaway="toggleInfoPanel">
-        {% include "includes/web/record_info_panel.html" %}
+        {% include "web/includes/web/record_info_panel.html" %}
       </div>
       <div id="diva_viewer">
         <beat-loader v-show="loading && transcriptionId" color="#aaa"></beat-loader>
