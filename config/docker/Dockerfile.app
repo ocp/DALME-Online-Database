@@ -119,8 +119,8 @@ COPY ./app/domain ./domain
 COPY ./app/oauth ./oauth
 COPY ./app/search ./search
 COPY ./app/static ./static
+COPY ./app/templates ./templates
 COPY ./app/tenants ./tenants
 COPY ./app/web ./web
 COPY ./app/manage.py ./
-
 STOPSIGNAL SIGTERM
