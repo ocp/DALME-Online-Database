@@ -4,7 +4,6 @@
 # configuration and fed forward to the child modules when required.
 
 locals {
-  namespace   = "ida"
   environment = "staging"
 
   aws_account = 209330743443
@@ -23,7 +22,6 @@ locals {
   ]
   aws_dns_writer_role_name = "DNSWriterRole"
 
-  lock_table                         = "terraform-locks"
   oauth_client_id                    = "zzr1i8b3d4xqi3jb4lkro39r.ida.staging"
   postgres_version                   = 16
   opensearch_version                 = "Elasticsearch_7.7"

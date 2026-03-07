@@ -6,7 +6,6 @@ terraform {
 
 locals {
   env                                = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
-  namespace                          = local.env.locals.namespace
   admins                             = local.env.locals.admins
   domain                             = local.env.locals.domain
   environment                        = local.env.locals.environment
@@ -14,6 +13,7 @@ locals {
   opensearch_version                 = local.env.locals.opensearch_version
   ports                              = local.env.locals.ports
   postgres_version                   = local.env.locals.postgres_version
+  db_name                            = "ida"
 }
 
 inputs = {
@@ -48,7 +48,7 @@ inputs = {
     apply_immediately                     = contains(["development", "staging"], local.environment)
     backup_retention_period               = 7
     cidr_blocks                           = "0.0.0.0/0"
-    db_name                               = local.namespace
+    db_name                               = local.db_name
     deletion_protection                   = local.environment == "production"
     engine                                = "postgres"
     engine_version                        = local.postgres_version
@@ -67,6 +67,6 @@ inputs = {
     skip_final_snapshot                   = contains(["development", "staging"], local.environment)
     storage_encrypted                     = true
     storage_type                          = "gp2"
-    username                              = local.namespace
+    username                              = local.db_name
   }
 }

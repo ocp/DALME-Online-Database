@@ -11,7 +11,7 @@ locals {
   aws_account_dns          = 203918846978 # The ida-root account.
   aws_dns_writer_role_name = local.environment_vars.locals.aws_dns_writer_role_name
 
-  namespace   = local.environment_vars.locals.namespace
+  namespace   = "ida"
   environment = local.environment_vars.locals.environment
 }
 

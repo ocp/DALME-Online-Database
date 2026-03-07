@@ -40,7 +40,6 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_allowed_oidc"></a> [allowed\_oidc](#input\_allowed\_oidc) | Github repos/branches allowed to assume to OIDC role. | `list(map(string))` | n/a | yes |
-| <a name="input_lock_table"></a> [lock\_table](#input\_lock\_table) | DynamoDB table holding terraform state locks. | `string` | n/a | yes |
 
 ## Outputs
 

@@ -94,29 +94,6 @@ data "aws_iam_policy_document" "gha_oidc_policy_one" {
     effect = "Allow"
     # tfsec:ignore:aws-iam-no-policy-wildcards
     actions = [
-      "dynamodb:Describe*",
-    ]
-    # tfsec:ignore:aws-iam-no-policy-wildcards
-    resources = ["*"]
-  }
-
-  statement {
-    effect = "Allow"
-    # tfsec:ignore:aws-iam-no-policy-wildcards
-    actions = [
-      "dynamodb:DeleteItem",
-      "dynamodb:Get*",
-      "dynamodb:PutItem",
-    ]
-    resources = [
-      "arn:aws:dynamodb:${var.aws_region}:${var.aws_account}:table/${var.lock_table}",
-    ]
-  }
-
-  statement {
-    effect = "Allow"
-    # tfsec:ignore:aws-iam-no-policy-wildcards
-    actions = [
       "ec2:Describe*",
     ]
     # tfsec:ignore:aws-iam-no-policy-wildcards
