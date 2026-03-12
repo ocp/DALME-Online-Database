@@ -1,6 +1,6 @@
 # Entrypoint for the rds module.
 locals {
-  apply_method = contains(["development", "staging"], var.environment) ? "immediate" : "pending-reboot"
+  apply_method = var.apply_immediately ? "immediate" : "pending-reboot"
   family       = "${var.engine}${var.engine_version}"
 }
 
