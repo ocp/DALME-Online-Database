@@ -536,7 +536,7 @@ resource "aws_ecs_task_definition" "publish" {
 
   container_definitions = jsonencode([
     {
-      command     = ["python3", "manage.py", "publish_pags"]
+      command     = ["python3", "manage.py", "publish_pages"]
       cpu         = 0
       environment = local.app_env
       essential   = true
