@@ -17,12 +17,12 @@ variable "keepers" {
 }
 
 variable "kms_key_arn" {
-  description = "ARN of thw KMS key to be used to encrypt the secret."
+  description = "ARN of the KMS key to be used to encrypt the secret."
   type        = string
 }
 
 variable "length" {
-  description = "The length of the generated random password"
+  description = "The length of the generated random secret"
   type        = number
   default     = 64
 }

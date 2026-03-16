@@ -36,8 +36,8 @@
 | <a name="input_description"></a> [description](#input\_description) | A description of the secret. | `string` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Identify the deployment environment. | `string` | n/a | yes |
 | <a name="input_keepers"></a> [keepers](#input\_keepers) | Define values that on change will force regeneration of the random value. | `map(any)` | n/a | yes |
-| <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | ARN of thw KMS key to be used to encrypt the secret. | `string` | n/a | yes |
-| <a name="input_length"></a> [length](#input\_length) | The length of the generated random password | `number` | `64` | no |
+| <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | ARN of the KMS key to be used to encrypt the secret. | `string` | n/a | yes |
+| <a name="input_length"></a> [length](#input\_length) | The length of the generated random secret | `number` | `64` | no |
 | <a name="input_min_special"></a> [min\_special](#input\_min\_special) | Minimum number of special characters. | `number` | `5` | no |
 | <a name="input_name"></a> [name](#input\_name) | The name of the new secret. | `string` | n/a | yes |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | The project namespace. | `string` | n/a | yes |
