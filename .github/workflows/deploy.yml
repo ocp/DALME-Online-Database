@@ -14,10 +14,11 @@ env:
   NAMESPACE: ida
   ENVIRONMENT: ${{ github.ref_name == 'master' && 'production' || 'staging' }}
   TAG: ${{ github.ref_name == 'master' && 'latest' || 'staging' }}
-  TFLINT_PLUGIN_CACHE: .terraform.d/plugin-cache
+  TF_PLUGIN_CACHE: .terraform.d/plugin-cache
+  TFLINT_PLUGIN_CACHE: .tflint.d/plugins
   TF_ROOT: ./tf
-  TF_VERSION: 1.6
-  TG_VERSION: 0.67.16
+  TF_VERSION: 1.14
+  TG_VERSION: 0.93.11
   OIDC_ROLE_NAME: OIDCGithubActionsRole
 
 permissions:
@@ -221,12 +222,20 @@ jobs:
 
       - id: create-caches
         run: |
+          mkdir -p ~/${{ env.TF_PLUGIN_CACHE }}
           mkdir -p ~/${{ env.TFLINT_PLUGIN_CACHE }}
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
+        with:
+          path: ~/${{ env.TF_PLUGIN_CACHE }}
+          key: ${{ runner.os }}-tf-plugin-cache-${{ hashFiles('**/.terraform.lock.hcl') }}
+          restore-keys: |
+            ${{ runner.os }}-tf-plugin-cache-
+
+      - uses: actions/cache@v5
         with:
           path: ~/${{ env.TFLINT_PLUGIN_CACHE }}
-          key: ${{ runner.os }}-tflint-plugin-cache-${{ hashFiles('**/.terraform.lock.hcl') }}
+          key: ${{ runner.os }}-tflint-plugin-cache-${{ hashFiles('**/.tflint.hcl') }}
           restore-keys: |
             ${{ runner.os }}-tflint-plugin-cache-
 
